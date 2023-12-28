@@ -1,0 +1,70 @@
+{
+  "name": "next-dynamic-runtime-config",
+  "version": "0.1.0",
+  "description": "Dynamic Runtime config for Next.js applications",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./init": {
+      "types": "./dist/esm/init.d.ts",
+      "import": "./dist/esm/init.js",
+      "require": "./dist/cjs/init.js"
+    },
+    "./provider": {
+      "types": "./dist/esm/provider.d.ts",
+      "import": "./dist/esm/provider.js",
+      "require": "./dist/cjs/provider.js"
+    },
+    "./register": {
+      "types": "./dist/esm/register.d.ts",
+      "import": "./dist/esm/register.js",
+      "require": "./dist/cjs/register.js"
+    }
+  },
+  "files": [
+    "./dist",
+    "./src"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && tsc --module esnext --moduleResolution bundler --outDir ./dist/esm/ && tsc --module nodenext --moduleResolution nodenext --esModuleInterop --outDir ./dist/cjs/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "is-ci || husky install",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "nextjs",
+    "config"
+  ],
+  "author": "Daniel Cousineau <dcousineau@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.3",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^15.2.0",
+    "next": "^14.0.4",
+    "prettier": "^3.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "next": ">= 13.x",
+    "react": "18.x",
+    "react-dom": "18.x"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md,yaml,css}": "prettier --editorconfig --write --ignore-unknown",
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  }
+}
