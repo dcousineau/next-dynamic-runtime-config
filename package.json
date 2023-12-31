@@ -11,19 +11,19 @@
   "exports": {
     ".": {
       "types": "./dist/cjs/index.d.ts",
-      "require": "./dist/cjs/index.js"
+      "default": "./dist/cjs/index.js"
     },
     "./init": {
       "types": "./dist/cjs/init.d.ts",
-      "require": "./dist/cjs/init.js"
+      "default": "./dist/cjs/init.js"
     },
     "./provider": {
       "types": "./dist/cjs/provider.d.ts",
-      "require": "./dist/cjs/provider.js"
+      "default": "./dist/cjs/provider.js"
     },
     "./register": {
       "types": "./dist/cjs/register.d.ts",
-      "require": "./dist/cjs/register.js"
+      "default": "./dist/cjs/register.js"
     }
   },
   "files": [
