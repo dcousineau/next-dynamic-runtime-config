@@ -10,23 +10,19 @@
   "types": "./dist/cjs/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.js",
+      "types": "./dist/cjs/index.d.ts",
       "require": "./dist/cjs/index.js"
     },
     "./init": {
-      "types": "./dist/esm/init.d.ts",
-      "import": "./dist/esm/init.js",
+      "types": "./dist/cjs/init.d.ts",
       "require": "./dist/cjs/init.js"
     },
     "./provider": {
-      "types": "./dist/esm/provider.d.ts",
-      "import": "./dist/esm/provider.js",
+      "types": "./dist/cjs/provider.d.ts",
       "require": "./dist/cjs/provider.js"
     },
     "./register": {
-      "types": "./dist/esm/register.d.ts",
-      "import": "./dist/esm/register.js",
+      "types": "./dist/cjs/register.d.ts",
       "require": "./dist/cjs/register.js"
     }
   },
@@ -36,7 +32,9 @@
   ],
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && tsc --module esnext --moduleResolution bundler --outDir ./dist/esm/ && tsc --module nodenext --moduleResolution nodenext --esModuleInterop --outDir ./dist/cjs/",
+    "build": "npm run clean && npm run build:cjs",
+    "build:esm": "tsc --module esnext --moduleResolution bundler --outDir ./dist/esm/",
+    "build:cjs": "tsc --module nodenext --moduleResolution nodenext --esModuleInterop --outDir ./dist/cjs/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "is-ci || husky install",
     "prepack": "npm run build"
