@@ -1,6 +1,6 @@
 {
   "name": "next-dynamic-runtime-config",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Dynamic Runtime config for Next.js applications",
   "repository": {
     "type": "git",
