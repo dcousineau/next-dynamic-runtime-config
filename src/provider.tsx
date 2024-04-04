@@ -1,29 +1,40 @@
 "use client";
 
 import type { Config } from "./register";
-import React from "react";
+import React, { useMemo } from "react";
 import { createContext, useContext } from "react";
 
+const IS_BROWSER = typeof window !== "undefined";
+
 export default function createProvider<T extends Config>(runtimeConfig: T) {
-  const RuntimeConfigContext = createContext(runtimeConfig);
+  const RuntimeConfigContext = createContext({
+    config: runtimeConfig,
+    server: !IS_BROWSER,
+  });
 
   const RuntimeConfigProvider = ({ children }: { children?: React.ReactNode }) => {
     let _config = runtimeConfig;
-    if (typeof window !== "undefined") {
-      _config = {
-        ...((window as unknown as Record<string, object>)?.__CONFIG__ ?? {}),
-        server: false,
-      } as T;
+    if (IS_BROWSER) {
+      _config = ((window as unknown as Record<string, unknown>)?.__CONFIG__ ?? {}) as T;
     }
-    return <RuntimeConfigContext.Provider value={_config}>{children}</RuntimeConfigContext.Provider>;
+
+    const providerValue = useMemo(
+      () => ({
+        config: _config,
+        server: !IS_BROWSER,
+      }),
+      [_config],
+    );
+
+    return <RuntimeConfigContext.Provider value={providerValue}>{children}</RuntimeConfigContext.Provider>;
   };
 
-  const useRuntimeConfig = (): T => {
+  const useRuntimeConfig = (): { config: T; server: boolean } => {
     const config = useContext(RuntimeConfigContext);
 
-    if (!config) {
-      throw new Error("Runtime config is not available, did you mount <RuntimeConfigInit /> in root layout?");
-    }
+    if (!IS_BROWSER) return { config: runtimeConfig, server: true };
+
+    if (!config) throw new Error("Runtime config is not available, did you mount <RuntimeConfigInit /> in the root layout or your providers file?");
 
     return config;
   };

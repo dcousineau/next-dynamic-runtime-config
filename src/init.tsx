@@ -1,14 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Config } from "./register";
 import React from "react";
 import Script from "next/script";
 
-export default async function RuntimeConfigInit({ config }: { config: Config }) {
-  const _config: Record<string, any> = { ...config };
-  delete _config.server;
+function renderConfig(config: Config, opts: { freeze?: boolean; readable?: boolean } = {}) {
+  const renderedConfig = JSON.stringify(config, null, opts.readable ? 2 : undefined);
+  if (opts.freeze) {
+    return `Object.freeze(${renderedConfig})`;
+  }
+  return renderedConfig;
+}
+
+export interface RuntimeConfigInitProps {
+  config: Config;
+  freeze?: boolean;
+  readable?: boolean;
+}
+
+export default async function RuntimeConfigInit({ config, freeze = false, readable = false }: RuntimeConfigInitProps) {
   return (
     <Script id="__runtime-config" strategy="beforeInteractive">
-      {`window.__CONFIG__ = ${JSON.stringify(_config)};`}
+      {`window.__CONFIG__ = ${renderConfig(config, { freeze, readable })};`}
     </Script>
   );
 }

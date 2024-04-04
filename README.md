@@ -22,24 +22,22 @@ It is recommended you create two files in your `src/` or `lib/` directories of y
 
 The first file is where you set up the shared configuration. I recommend naming the file `lib/config-register.ts`:
 
-```typescript
+```ts
 import registerConfig from "next-dynamic-runtime-config/register";
 
-const runtimeConfig = registerConfig({
+export default registerConfig({
   foo: process.env.NEXT_PUBLIC_FOO,
   bar: process.env.BAR,
   baz: process.env.NODE_ENV === "production" ? "prod" : "dev",
 });
-
-export default runtimeConfig;
 ```
 
-The second file will be your most commonly access client file that will export your hook. I recommend naming the file `lib/config.ts`:
+The second file will be your most commonly access client file that will export your hook. I recommend naming the file `lib/config-client.ts`:
 
-```typescript
+```ts
 "use client";
 
-import runtimeConfig from "./config-register";
+import runtimeConfig from "./config";
 import createProvider from "next-dynamic-runtime-config/provider";
 
 const { RuntimeConfigContext, RuntimeConfigProvider, useRuntimeConfig } = createProvider(runtimeConfig);
@@ -50,26 +48,24 @@ export default useRuntimeConfig;
 
 Next in your `app/providers.tsx` add the RuntimeConfigProvider:
 
-```typescript
+```tsx
 import { RuntimeConfigProvider } from "@/lib/config";
 
 export default function Providers({ children }) {
   return (
     <RuntimeConfigProvider>
-      <FooProvider>
-        {children}
-      </FooProvider>
+      <FooProvider>{children}</FooProvider>
     </RuntimeConfigProvider>
-  )
+  );
 }
 ```
 
 Finally, in your root layout you **must** initialize the "init" script in order to provide configuration to the client. As the init component provides a [`beforeInteractive` script](https://nextjs.org/docs/pages/building-your-application/optimizing/scripts#strategy) _and_ it it MUST be placed in the root layout in order to ensure it is available on ALL client pages. Add the following to `app/layout.tsx`:
 
-```typescript
+```tsx
 // ...snip...
 import RuntimeConfigInit from "next-dynamic-runtime-config/init";
-import runtimeConfig from "@/lib/config-register";
+import runtimeConfig from "@/lib/config";
 
 // ...snip...
 
@@ -88,18 +84,26 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
 Congratulations! You're now able to use the hook to access runtime configuration in your components, for example:
 
-```typescript
+```tsx
 "use client";
 
-import { useRuntimeConfig } from '@/src/config'
+import { useRuntimeConfig } from "@/src/config";
 
 export default function ClientPage() {
-  const config = useRuntimeConfig();
-  return (
-    <div>
-      Config Item foo: {config.foo}
-    </div>
-  )
+  const { config, server } = useRuntimeConfig();
+  return <div>Config Item foo: {config.foo}</div>;
+}
+```
+
+However for Server components you can _either_ access the same values you used to build your runtime config OR just import the registered config directly:
+
+```tsx
+"use server";
+
+import config from "@/lib/config-register";
+
+export default async function ServerPage() {
+  return <div>Config Item foo: {config.foo}</div>;
 }
 ```
 
