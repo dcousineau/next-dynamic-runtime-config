@@ -25,11 +25,13 @@ The first file is where you set up the shared configuration. I recommend naming 
 ```ts
 import registerConfig from "next-dynamic-runtime-config/register";
 
-export default registerConfig({
+const getRuntimeConfig = registerConfig({
   foo: process.env.NEXT_PUBLIC_FOO,
   bar: process.env.BAR,
   baz: process.env.NODE_ENV === "production" ? "prod" : "dev",
 });
+
+export default getRuntimeConfig;
 ```
 
 The second file will be your most commonly access client file that will export your hook. I recommend naming the file `lib/config-client.ts`:
@@ -65,7 +67,7 @@ Finally, in your root layout you **must** initialize the "init" script in order 
 ```tsx
 // ...snip...
 import RuntimeConfigInit from "next-dynamic-runtime-config/init";
-import runtimeConfig from "@/lib/config";
+import getRuntimeConfig from "@/lib/config";
 
 // ...snip...
 
@@ -75,7 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       {/* snip */}
       <body>
         <Providers>{children}</Providers>
-        <RuntimeConfigInit config={runtimeConfig} />
+        <RuntimeConfigInit config={getRuntimeConfig()} />
       </body>
     </html>
   );
@@ -100,9 +102,10 @@ However for Server components you can _either_ access the same values you used t
 ```tsx
 "use server";
 
-import config from "@/lib/config-register";
+import getRuntimeConfig from "@/lib/config-register";
 
 export default async function ServerPage() {
+  const config = getRuntimeConfig();
   return <div>Config Item foo: {config.foo}</div>;
 }
 ```
