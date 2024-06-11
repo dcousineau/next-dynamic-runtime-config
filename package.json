@@ -36,7 +36,7 @@
     "build:esm": "tsc --module esnext --moduleResolution bundler --outDir ./dist/esm/",
     "build:cjs": "tsc --module nodenext --moduleResolution nodenext --esModuleInterop --outDir ./dist/cjs/",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "is-ci || husky install",
+    "prepare": "is-ci || husky",
     "prepack": "npm run build"
   },
   "keywords": [
@@ -46,19 +46,19 @@
   "author": "Daniel Cousineau <dcousineau@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^18.2.45",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
+    "@types/react": "^18.3.3",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "husky": "^8.0.3",
+    "eslint-plugin-react": "^7.34.2",
+    "husky": "^9.0.11",
     "is-ci": "^3.0.1",
-    "lint-staged": "^15.2.0",
-    "next": "^14.0.4",
-    "prettier": "^3.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.3.3"
+    "lint-staged": "^15.2.6",
+    "next": "^14.2.3",
+    "prettier": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "next": ">= 13.x",
