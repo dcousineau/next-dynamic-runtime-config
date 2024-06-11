@@ -6,14 +6,14 @@ import { createContext, useContext } from "react";
 
 const IS_BROWSER = typeof window !== "undefined";
 
-export default function createProvider<T extends Config>(runtimeConfig: T) {
+export default function createProvider<T extends Config>(getRuntimeConfig: () => T) {
   const RuntimeConfigContext = createContext({
-    config: runtimeConfig,
+    config: getRuntimeConfig(),
     server: !IS_BROWSER,
   });
 
   const RuntimeConfigProvider = ({ children }: { children?: React.ReactNode }) => {
-    let _config = runtimeConfig;
+    let _config = getRuntimeConfig();
     if (IS_BROWSER) {
       _config = ((window as unknown as Record<string, unknown>)?.__CONFIG__ ?? {}) as T;
     }
@@ -32,7 +32,7 @@ export default function createProvider<T extends Config>(runtimeConfig: T) {
   const useRuntimeConfig = (): { config: T; server: boolean } => {
     const config = useContext(RuntimeConfigContext);
 
-    if (!IS_BROWSER) return { config: runtimeConfig, server: true };
+    if (!IS_BROWSER) return { config: getRuntimeConfig(), server: true };
 
     if (!config) throw new Error("Runtime config is not available, did you mount <RuntimeConfigInit /> in the root layout or your providers file?");
 
