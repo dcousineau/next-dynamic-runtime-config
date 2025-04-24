@@ -46,24 +46,24 @@
   "author": "Daniel Cousineau <dcousineau@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
+    "@types/react": "^19.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.34.2",
-    "husky": "^9.0.11",
-    "is-ci": "^3.0.1",
-    "lint-staged": "^15.2.6",
-    "next": "^14.2.3",
-    "prettier": "^3.3.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "typescript": "^5.4.5"
+    "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
+    "is-ci": "^4.1.0",
+    "lint-staged": "^15.5.1",
+    "next": "^15.3.1",
+    "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "next": ">= 13.x",
-    "react": "18.x",
-    "react-dom": "18.x"
+    "next": ">=13.x",
+    "react": ">=18.x",
+    "react-dom": ">=18.x"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md,yaml,css}": "prettier --editorconfig --write --ignore-unknown",
